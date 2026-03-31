@@ -18,7 +18,7 @@ void createArray(struct myArray *a,int tSize,int uSize){
 //     for(int i=0;i<a.used_size;i++){
 //         printf("%d\n",a.base_address[i]);
 //     }
-// } We use function like this this the the example of call by value but programmer did not use it because if the array is large it copy the whole the array which make the program slower.
+// } We use function like this the example of call by value but programmer did not use it because if the array is large it copy the whole the array which make the program slower.
 
 void show(struct myArray * a){
     for(int i=0;i<a->used_size;i++){
