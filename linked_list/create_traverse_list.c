@@ -47,5 +47,8 @@ int main(){
     third->next = NULL;
     linkedListTraversel(head);
 
+    free(head);
+    free(second);
+    free(third);
     return 0;
 }
