@@ -64,7 +64,8 @@ void deleteAtLast(Node* head){
     
 }
 
-void deleteAtNode(Node*& head,int value){
+void deleteByValue(Node*& head,int value){
+    // In this code we delete the element when value matches
     if(head == nullptr){
         cout << "Head is empty \n";
         return;
@@ -88,6 +89,18 @@ void deleteAtNode(Node*& head,int value){
     }else{
         cout << "Element not found\n";
     }
+}
+
+void deleteAtPointer(Node* ptr){
+    // In this pointer bascially we copy the next element data and next pointer and paste in the current ptr which we want to delete and delete the next element
+    if(ptr == nullptr || ptr->next == nullptr){
+        cout << "Last element is not deleted"<<endl;
+        return;
+    }
+    Node* temp = ptr->next;
+    ptr->data = temp->data;
+    ptr->next = temp->next;
+    delete temp;
 }
 
 int main(){
@@ -114,11 +127,14 @@ int main(){
     // cout << "---Delete At Specific Index---"<<endl;
     // deleteAtIndex(first,5);
     
-    // cout<<"---Delete at Node---"<<endl;
+    // cout<<"---Delete at End---"<<endl;
     // deleteAtLast(first);
 
-    cout << "---Delete at Index---"<<endl;
-    deleteAtNode(first,70);
+    // cout << "---Delete when value is given ---"<<endl;
+    // deleteByValue(first,70);
+
+    cout << "---Delete when pointer is given---"<<endl;
+    deleteAtPointer(second);
 
     display(first);
 
