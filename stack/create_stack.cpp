@@ -7,30 +7,50 @@ struct Stack{
     int* arr;
 };
 
-int isEmpty(Stack* ptr){
-    if(ptr->top == -1){
-        return 1;
-    }
-    return 0;
+bool isEmpty(Stack* ptr){
+    return ptr->top == -1;
 }
-int isFull(Stack* ptr){
-    if(ptr->top == ptr->size - 1){
-        return 1;
+bool isFull(Stack* ptr){
+    return ptr->top == ptr->size - 1;
+}
+
+void push(Stack* ptr,int value){
+    if (isFull(ptr)){
+        cout << "Stack Overflow\n";
+        return;
     }
-    return 0;
+    ptr->arr[++ptr->top] = value;
+}
+
+int pop(Stack* ptr){
+    if(isEmpty(ptr)){
+        cout << "Stack Underflow\n";
+        return -1;
+    }
+    int val = ptr->arr[ptr->top];
+    ptr->top--;
+    return val;
+
 }
 
 int main(){
-    Stack* s = new Stack;
-    s->size = 10;
+    Stack* s = new Stack();
+    s->size = 5;
     s->top = -1;
     s->arr = new int[s->size];
 
-    if(isEmpty(s)){
-        cout << "Stack is empty";
-    }else{
-        cout << "Stack is not empty";
-    }
+    cout << isFull(s) << endl;
+    cout << isEmpty(s) << endl;
+    push(s,56);
+    push(s,16);
+    push(s,526);
+    push(s,5346);
+    cout << isFull(s) << endl;
+    cout << isEmpty(s) << endl;
+    cout << "Popped " << pop(s) << " from stack\n";
+
+    delete[] s->arr;
+    delete s;
 
     return 0;
 }
