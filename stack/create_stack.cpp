@@ -27,10 +27,18 @@ int pop(Stack* ptr){
         cout << "Stack Underflow\n";
         return -1;
     }
-    int val = ptr->arr[ptr->top];
-    ptr->top--;
+    int val = ptr->arr[ptr->top--];
     return val;
 
+}
+
+int peek(Stack* ptr,int i){
+    if(ptr->top-i+1 < 0 || i<=0 ){
+        cout << "Invalid Position\n";
+        return -1;
+    }
+    int index = ptr->top-i+1;
+    return index;
 }
 
 int main(){
@@ -48,6 +56,9 @@ int main(){
     cout << isFull(s) << endl;
     cout << isEmpty(s) << endl;
     cout << "Popped " << pop(s) << " from stack\n";
+
+    int val = peek(s,0);
+    if(val != -1) cout << "Element at "<<val<<" is "<<s->arr[val];
 
     delete[] s->arr;
     delete s;
