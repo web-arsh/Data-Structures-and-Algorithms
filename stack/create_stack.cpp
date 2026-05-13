@@ -41,6 +41,22 @@ int peek(Stack* ptr,int i){
     return index;
 }
 
+int stackTop(Stack* ptr){
+    if(isEmpty(ptr)){
+        cout << "Invalid Position\n";
+        return -1;
+    }
+    return ptr->arr[ptr->top];
+}
+int stackBottom(Stack* ptr){
+    if(isEmpty(ptr)){
+        cout << "Stack is Empty\n";
+        return -1;
+    }
+    return ptr->arr[0];
+}
+
+
 int main(){
     Stack* s = new Stack();
     s->size = 5;
@@ -57,8 +73,12 @@ int main(){
     cout << isEmpty(s) << endl;
     cout << "Popped " << pop(s) << " from stack\n";
 
-    int val = peek(s,0);
-    if(val != -1) cout << "Element at "<<val<<" is "<<s->arr[val];
+    int val = peek(s,3);
+    if(val != -1) cout << "Element at "<<val+1<<" is "<<s->arr[val]<<endl;
+
+    cout << "Top element is "<<stackTop(s)<<endl;
+
+    cout << "Bottom element is "<<stackBottom(s)<<endl;
 
     delete[] s->arr;
     delete s;
