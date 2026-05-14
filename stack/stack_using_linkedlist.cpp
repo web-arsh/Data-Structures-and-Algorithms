@@ -6,66 +6,130 @@ struct Node{
     Node* next;
 };
 
-void display(Node* ptr){
-    while(ptr != nullptr){
-        cout << ptr->data;
-        ptr = ptr->next;
-        if(ptr != nullptr) cout <<",";
-    }
-    cout << endl;
-}
+class StackLinkedList{
+    private:
+        Node* top;
+        int size;
+    public:
+        StackLinkedList(): top(nullptr), size(0){}
 
-bool isEmpty(Node* top){
-    if(top == nullptr) return true;
-    return false;
-}
+        bool isEmpty(){
+            return top == nullptr;
+        }
 
-bool isFull(Node* top){
-    try{
-        Node* ptr = new Node();
-        delete ptr;
-        return false;
-    }catch(bad_alloc&){
-        return true;
-    }
-}
+        bool isFull(){
+            try{
+                Node* ptr = new Node();
+                delete ptr;
+                return false;
+            }catch(bad_alloc&){
+                return true;
+            }
+        }
 
-Node* push(Node*& top,int data){
-    if(isFull(top)){
-        cout << "Stack Overflow\n";
-        return nullptr;
-    }
+        int getSize() const {
+            return size;
+        }
 
-    Node* newNode = new Node{data,top};
-    top = newNode;
-    return top;
-}
+        void push(int data){
+            if(isFull()){
+                throw overflow_error("Stack Overflow: Stack is full\n");
+            }
+            top = new Node{data,top};
+            size++;
+        }
 
-int pop(Node*& top){
-    if(isEmpty(top)){
-        cout << "Stack Underflow\n";
-        return -1;
-    }
-    Node* n = top;
-    int pop = n->data;
-    top = top->next;
-    delete n;
-    return pop;
-}
+        int pop(){
+            if(isEmpty()){
+                throw underflow_error("Stack Underflow: Stack is empty\n");
+            }
+            Node* temp = top;
+            int n = temp->data;
+            top = top->next;
+            delete temp;
+            size--;
+            return n;
+        }
+
+        int stackTop(){
+            if(isEmpty()){
+                throw underflow_error("Stack Underflow: Stack is empty\n");
+            }
+            return top->data;
+        }
+
+        int stackBottom(){
+            if(isEmpty()){
+                throw underflow_error("Stack Underflow: Stack is empty\n");
+            }
+            Node* ptr = top;
+            while(ptr->next != nullptr){
+                ptr = ptr->next;
+            }
+            return ptr->data;
+        }
+
+        int peek(int index){
+            if(isEmpty()){
+                throw underflow_error("Stack Underflow: Stack is Empty\n");
+            }
+            if(index <= 0 || index > size){
+                throw out_of_range("Index out of range: valid range is 1 to " + to_string(size));
+            }
+
+            Node* ptr = top;
+            for(int i =1 ;i < index;i++){
+                ptr = ptr->next;
+            }
+            return ptr->data;
+        }
+
+        void display(){
+            if(isEmpty()){
+                throw underflow_error("Stack Underflow: Stack is empty\n");
+            }
+            cout << "Top -> ";
+            Node* ptr = top;
+            while(ptr != nullptr){
+                cout << ptr->data;
+                if(ptr->next != nullptr) cout << " -> ";
+                ptr = ptr->next;
+            }
+            cout << "-> nullptr \n";
+        }
+        ~StackLinkedList(){
+            while(!isEmpty()){
+                pop();  
+            }
+        }
+};
+
 
 int main(){
-    Node* top = nullptr;
-    push(top,22);
-    push(top,66);
-    push(top,33);
+    try{
+        StackLinkedList s;
+        s.push(12);
+        s.push(45);
+        s.push(90);
+        s.push(55);
+        s.display();
 
-    int p = pop(top);
-    cout << "Pop element is "<<p<<endl;
-    display(top);
+        cout << "Top       : " << s.stackTop()    << "\n";
+        cout << "Bottom    : " << s.stackBottom() << "\n";
+        cout << "peek(1)   : " << s.peek(1)       << "\n";
+        cout << "peek(2)   : " << s.peek(2)       << "\n";
+        cout << "peek(5)   : " << s.peek(5)       << "\n";
 
-    while(top != nullptr){
-        pop(top);
+        cout << "Popped: " << s.pop() << "\n";
+        s.display();
+
+        cout << "Size: " << s.getSize() << "\n";
+    }catch(const out_of_range& e){
+        cout << "Out of Range Error: "<<e.what() <<"\n";
+    }catch (const underflow_error& e) {
+        cout << "Underflow Error    : " << e.what() << "\n";
+    }catch (const overflow_error& e) {
+        cout << "Overflow Error     : " << e.what() << "\n";
     }
-
     return 0;
 }
